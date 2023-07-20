@@ -1,6 +1,7 @@
 const mysql = require('mysql2')
 const connection = require('./db.js')
 
+
 function viewEmployeesQ() {
     connection.query(
         'select * from employee',
@@ -32,4 +33,16 @@ function viewDepartmentsQ() {
 
 }
 
-module.exports = { viewEmployeesQ, viewRolesQ, viewDepartmentsQ }
+function addEmployeeQ() {
+    connection.query(
+        'insert into employee (first_name, last_name) values ("Robert", "Lowther")',
+        (err, results, fields) => {
+            err ? console.error(err) :
+            console.table(results)
+        }
+    )
+}
+
+
+
+module.exports = { viewEmployeesQ, viewRolesQ, viewDepartmentsQ, addEmployeeQ }

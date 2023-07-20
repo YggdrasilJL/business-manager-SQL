@@ -1,14 +1,20 @@
 const inquirer = require('inquirer')
-const { viewEmployeesQ, viewRolesQ, viewDepartmentsQ } = require('./queries')
-
+const { viewEmployeesQ, viewRolesQ, viewDepartmentsQ, addEmployeeQ } = require('./queries')
+menu()
 function menu() {
-
     inquirer
         .prompt(
             {
                 type: 'list',
-                choices: ['View all employees', 'Add an employee', 'Update employee role', 'View all roles',
-                    'Add a role', 'View all departments', 'Add department', 'Quit'],
+                choices:
+                    ['View all employees',
+                        'Add an employee',
+                        'Update employee role',
+                        'View all roles',
+                        'Add a role',
+                        'View all departments',
+                        'Add department',
+                        'Quit'],
                 name: 'action'
             })
         .then(data => {
@@ -17,7 +23,7 @@ function menu() {
                     viewEmployees()
                     break;
                 case 'Add an employee':
-                    console.log('added employee goes here')
+                    addEmployee()
                     break;
                 case 'Update employee role':
                     console.log('role here')
@@ -40,9 +46,8 @@ function menu() {
         })
 }
 
-async function viewEmployees() {
+function viewEmployees() {
     viewEmployeesQ()
-    await process.exit()
 }
 
 function viewRoles() {
@@ -53,4 +58,6 @@ function viewDepartments() {
     viewDepartmentsQ()
 }
 
-menu()
+function addEmployee() {
+    addEmployeeQ()
+}
