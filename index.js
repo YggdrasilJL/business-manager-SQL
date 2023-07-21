@@ -1,5 +1,5 @@
 const inquirer = require('inquirer')
-const { viewEmployeesQ, viewRolesQ, viewDepartmentsQ, addEmployeeQ } = require('./queries')
+const { viewEmployeesQ, viewRolesQ, viewDepartmentsQ, addEmployeeQ, updateRoleQ } = require('./queries')
 menu()
 function menu() {
     inquirer
@@ -26,7 +26,7 @@ function menu() {
                     addEmployee()
                     break;
                 case 'Update employee role':
-                    console.log('role here')
+                    updateRoleQ()
                     break;
                 case 'View all roles':
                     viewRoles()
@@ -46,18 +46,22 @@ function menu() {
         })
 }
 
-function viewEmployees() {
-    viewEmployeesQ()
+async function viewEmployees() {
+   await viewEmployeesQ()
+    menu()
 }
 
-function viewRoles() {
-    viewRolesQ()
+async function viewRoles() {
+    await viewRolesQ()
+    menu()
 }
 
-function viewDepartments() {
-    viewDepartmentsQ()
+async function viewDepartments() {
+    await viewDepartmentsQ()
+    menu()
 }
 
-function addEmployee() {
-    addEmployeeQ()
+async function addEmployee() {
+    await addEmployeeQ()
+    menu()
 }
