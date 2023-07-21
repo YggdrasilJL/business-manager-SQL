@@ -48,6 +48,28 @@ async function addEmployeeQ() {
         })
 }
 
+async function addRoleQ() {
+    await inquirer
+        .prompt([
+            {
+                type: 'input',
+                messsage: "What is the role?",
+                name: 'roleName'
+            },
+            {
+                type: 'input',
+                message: 'What is the salary for said role?',
+                name: 'salary'
+            }
+        ])
+        .then(async data => {
+            await connection.promise().query(
+                `insert into role (title, salary) values ('${data.roleName}','${data.salary}')`
+            )
+        console.info(data.roleName, 'role added')
+        })
+}
+
 async function updateRoleQ() {
     const [employees, fields] = await connection.promise().query(
         'select * from employee',
@@ -69,17 +91,22 @@ async function updateRoleQ() {
         })
 }
 
-async function addDepartment() {
-    inquirer
-    .prompt(
-        {
-            type: 'input',
-            message: ''
-        }
-    )
-    const [rows, fields] = await connection.promise().query(
-
-    )    
+async function addDepartmentQ() {
+    await inquirer
+        .prompt(
+            {
+                type: 'input',
+                message: 'What is the name of the department you want to add?',
+                name: 'addDepartment'
+            }
+        )
+        .then(async departmentName => {
+            await connection.promise().query(
+                `insert into department (name) value ('${departmentName.addDepartment}')`
+            )
+            console.info(departmentName.addDepartment, 'department added.')
+        })
 }
 
-module.exports = { viewEmployeesQ, viewRolesQ, viewDepartmentsQ, addEmployeeQ, updateRoleQ }
+module.exports = { viewEmployeesQ, viewRolesQ, viewDepartmentsQ, addEmployeeQ,
+     updateRoleQ, addDepartmentQ, addRoleQ }
