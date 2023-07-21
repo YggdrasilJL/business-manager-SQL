@@ -1,10 +1,10 @@
 const inquirer = require('inquirer')
 const { viewEmployeesQ, viewRolesQ, viewDepartmentsQ, addEmployeeQ,
-     updateRoleQ, addDepartmentQ, addRoleQ } = require('./queries')
+     updateRoleQ, addDepartmentQ, addRoleQ,  } = require('./queries')
 
      menu()
-function menu() {
-    inquirer
+async function menu() {
+   await inquirer
         .prompt(
             {
                 type: 'list',
@@ -43,8 +43,11 @@ function menu() {
                     addDepartment()
                     break;
                 case 'Quit':
-                    return process.exit()
+                    return quit()
             }
+        })
+        .catch(err => {
+            console.error("error:", err)
         })
 }
 
@@ -81,4 +84,19 @@ async function addRole() {
 async function updateRole() {
     await updateRoleQ()
     menu()
+}
+
+async function quit() {
+    await inquirer
+    .prompt(
+        {
+            type: 'list',
+            message: 'Are you sure you want to quit?',
+            choices: ['Yes', 'No'],
+            name: 'quit'
+        }
+    )
+    .then(async data => {
+        await data.quit === 'Yes' ? process.exit() : menu()
+    })
 }

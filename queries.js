@@ -46,6 +46,9 @@ async function addEmployeeQ() {
             )
             console.info(data.firstName, 'added!')
         })
+        .catch(err => {
+            console.error("error:", err)
+        })
 }
 
 async function addRoleQ() {
@@ -68,6 +71,9 @@ async function addRoleQ() {
             )
         console.info(data.roleName, 'role added')
         })
+        .catch(err => {
+            console.error("error:", err)
+        })
 }
 
 async function updateRoleQ() {
@@ -89,6 +95,9 @@ async function updateRoleQ() {
         .then(async data => {
             console.log(data)
         })
+        .catch(err => {
+            console.error("error:", err)
+        })
 }
 
 async function addDepartmentQ() {
@@ -106,7 +115,10 @@ async function addDepartmentQ() {
             )
             console.info(departmentName.addDepartment, 'department added.')
         })
+        .catch(err => {
+            console.error("error:", err)
+        })
 }
 
 module.exports = { viewEmployeesQ, viewRolesQ, viewDepartmentsQ, addEmployeeQ,
-     updateRoleQ, addDepartmentQ, addRoleQ }
+     updateRoleQ, addDepartmentQ, addRoleQ,  }
