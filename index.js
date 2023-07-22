@@ -1,10 +1,10 @@
 const inquirer = require('inquirer')
 const { viewEmployeesQ, viewRolesQ, viewDepartmentsQ, addEmployeeQ,
-     updateRoleQ, addDepartmentQ, addRoleQ,  } = require('./queries')
+    updateRoleQ, addDepartmentQ, addRoleQ, } = require('./queries')
 
-     menu()
+menu()
 async function menu() {
-   await inquirer
+    await inquirer
         .prompt(
             {
                 type: 'list',
@@ -52,7 +52,7 @@ async function menu() {
 }
 
 async function viewEmployees() {
-   await viewEmployeesQ()
+    await viewEmployeesQ()
     menu()
 }
 
@@ -88,15 +88,15 @@ async function updateRole() {
 
 async function quit() {
     await inquirer
-    .prompt(
-        {
-            type: 'list',
-            message: 'Are you sure you want to quit?',
-            choices: ['Yes', 'No'],
-            name: 'quit'
-        }
-    )
-    .then(async data => {
-        await data.quit === 'Yes' ? process.exit() : menu()
-    })
+        .prompt(
+            {
+                type: 'list',
+                message: 'Are you sure you want to quit?',
+                choices: ['Yes', 'No'],
+                name: 'quit'
+            }
+        )
+        .then(async data => {
+            await data.quit === 'Yes' ? process.exit() : menu()
+        })
 }
