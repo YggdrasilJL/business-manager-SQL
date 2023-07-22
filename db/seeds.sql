@@ -24,15 +24,15 @@ values
 insert into role (title, salary, department_id)
 values
 
-  ('Software Engineer', 80000, 1),
+  ('Software Engineer', 90000, 1),
 
-  ('Sales Manager', 90000, 2),
+  ('Sales Manager', 115200, 2),
 
-  ('Marketing Specialist', 75000, 3),
+  ('CEO', 4528000, 3),
 
-  ('HR Coordinator', 60000, 4),
+  ('HR Coordinator', 65200, 4),
 
-  ('Financial Analyst', 85000, 5),
+  ('Financial Analyst', 85020, 5),
 
   ('Customer Service Representative', 50000, 6),
 
@@ -45,25 +45,24 @@ values
   ('Product Manager', 110000, 10);
 
 -- insert employees
-insert into employee (first_name, last_name, role_id, manager_id)
-values
+INSERT INTO employee (first_name, last_name, role_id, manager_id)
+VALUES
+  ('Peter', 'Parker', 1, NULL),
 
-  ('John', 'Doe', 1, NULL),
+  ('Steve', 'Harrington', 2, NULL),
 
-  ('Jane', 'Smith', 2, NULL),
+  ('Tony', 'Stark', 3, 1),
 
-  ('Michael', 'Johnson', 3, 1),
+  ('Will', 'Byers', 4, 3),
 
-  ('Emily', 'Williams', 4, 3),
+  ('Steve', 'Rogers', 5, 1),
 
-  ('Christopher', 'Brown', 5, 1),
+  ('Natasha', 'Romanoff', 6, 3),
 
-  ('Jessica', 'Jones', 6, 3),
+  ('Bruce', 'Banner', 7, 2),
 
-  ('William', 'Davis', 7, 2),
+  ('Wanda', 'Maximoff', 8, 1),
 
-  ('Sarah', 'Miller', 8, 1),
+  ('Bucky', 'Barnes', 9, 2),
 
-  ('David', 'Wilson', 9, 2),
-
-  ('Olivia', 'Taylor', 10, 3);
+  ('Mike', 'Wheeler', 10, 3);
