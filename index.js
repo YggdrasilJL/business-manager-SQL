@@ -1,6 +1,6 @@
 const inquirer = require('inquirer')
 const { viewEmployeesQ, viewRolesQ, viewDepartmentsQ, addEmployeeQ,
-    updateRoleQ, addDepartmentQ, addRoleQ, } = require('./queries')
+    updateRoleQ, addDepartmentQ, addRoleQ,seeBudgetQ } = require('./queries')
 
 menu()
 async function menu() {
@@ -8,6 +8,7 @@ async function menu() {
         .prompt(
             {
                 type: 'list',
+                message: 'What would you like to do?',
                 choices:
                     ['View all employees',
                         'Add an employee',
@@ -16,6 +17,7 @@ async function menu() {
                         'Add a role',
                         'View all departments',
                         'Add department',
+                        'See annual utilized budget',
                         'Quit'],
                 name: 'action'
             })
@@ -42,6 +44,9 @@ async function menu() {
                 case 'Add department':
                     addDepartment()
                     break;
+                case 'See annual utilized budget':
+                    seeBudget()
+                    break;    
                 case 'Quit':
                     return quit()
             }
@@ -83,6 +88,11 @@ async function addRole() {
 
 async function updateRole() {
     await updateRoleQ()
+    menu()
+}
+
+async function seeBudget() {
+    await seeBudgetQ()
     menu()
 }
 
