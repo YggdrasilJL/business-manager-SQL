@@ -78,6 +78,13 @@ async function addEmployeeQ() {
 }
 
 async function addRoleQ() {
+    const [departments, fields] = await connection.promise().query(
+        'select * from department'
+    )
+    const departmentChoices = departments.map(department => ({
+        name:  department.department_name,
+        value: department.id
+    }))
     await inquirer
         .prompt([
             {
@@ -89,11 +96,17 @@ async function addRoleQ() {
                 type: 'input',
                 message: 'What is the salary for said role?',
                 name: 'salary'
+            },
+            {
+                type: 'list',
+                message: 'What is the department this role is in?',
+                choices: departmentChoices,
+                name: 'department'
             }
         ])
         .then(async data => {
             await connection.promise().query(
-                `insert into role (title, salary) values ('${data.roleName}','${data.salary}')`
+                `insert into role (title, salary, department_id) values ('${data.roleName}','${data.salary}', ${data.department})`
             )
             console.info(data.roleName, 'role added')
         })
@@ -159,7 +172,7 @@ async function addDepartmentQ() {
         )
         .then(async departmentName => {
             await connection.promise().query(
-                `insert into department (name) value ('${departmentName.addDepartment}')`
+                `insert into department (department_name) value ('${departmentName.addDepartment}')`
             )
             console.info(departmentName.addDepartment, 'department added.')
         })

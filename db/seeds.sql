@@ -45,8 +45,9 @@ values
   ('Product Manager', 110000, 10);
 
 -- insert employees
-INSERT INTO employee (first_name, last_name, role_id, manager_id)
-VALUES
+insert into employee (first_name, last_name, role_id, manager_id)
+values
+
   ('Peter', 'Parker', 1, NULL),
 
   ('Steve', 'Harrington', 2, NULL),
