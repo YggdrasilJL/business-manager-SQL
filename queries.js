@@ -1,13 +1,24 @@
 const mysql = require('mysql2')
-const connection = require('./db.js')
+const connection = require('./db/db.js')
 const inquirer = require('inquirer')
 
-
 async function viewEmployeesQ() {
-    // needs fields even if not called, or it tables the whole object
-    const [rows, fields] = await connection.promise().query(
-        'select * from employee',
-    )
+    const [rows, fields] = 
+    await connection.promise().query(
+    // uppercase mysql commands to make it look more readable in vscode
+     `SELECT 
+        emp.id AS employee_id,
+        emp.first_name,
+        emp.last_name,
+        rl.title AS job_title,
+        dep.department_name AS department,
+        rl.salary,
+        CONCAT(mgr.first_name, ' ', mgr.last_name) AS manager
+     FROM employee emp
+     LEFT JOIN role rl ON emp.role_id = rl.id
+     LEFT JOIN department dep ON rl.department_id = dep.id
+     LEFT JOIN employee mgr ON emp.manager_id = mgr.id;`
+  )
     console.table(rows)
 }
 
@@ -93,7 +104,7 @@ async function updateRoleQ() {
             }
         ])
         .then(async data => {
-            console.log(data)
+            console.log(data.chooseEmployee)
         })
         .catch(err => {
             console.error("error:", err)
