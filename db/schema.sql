@@ -1,3 +1,6 @@
+create database manage_bus;
+use (manage_bus)
+
 drop table if exists employee;
 drop table if exists department;
 drop table if exists role;
