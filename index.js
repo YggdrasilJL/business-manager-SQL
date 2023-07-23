@@ -1,6 +1,7 @@
 const inquirer = require('inquirer')
 const { viewEmployeesQ, viewRolesQ, viewDepartmentsQ, addEmployeeQ,
-    updateRoleQ, addDepartmentQ, addRoleQ, seeBudgetQ } = require('./queries')
+    updateRoleQ, addDepartmentQ, addRoleQ, seeBudgetQ
+} = require('./queries')
 
 menu()
 async function menu() {
@@ -46,7 +47,7 @@ async function menu() {
                     break;
                 case 'See annual utilized budget':
                     seeBudget()
-                    break;    
+                    break;
                 case 'Quit':
                     return quit()
             }
@@ -108,5 +109,8 @@ async function quit() {
         )
         .then(async data => {
             await data.quit === 'Yes' ? process.exit() : menu()
+        })
+        .catch(err => {
+            console.error("error:", err)
         })
 }

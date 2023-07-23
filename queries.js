@@ -1,11 +1,12 @@
-const mysql = require('mysql2')
 const connection = require('./db/db.js')
 const inquirer = require('inquirer')
 
 async function viewEmployeesQ() {
+    // need to deconstruct and use fields instead of just rows because it will display an object
+    // and break if we dont deconstruct into 2 variables
     const [rows, fields] =
         await connection.promise().query(
-        // uppercase mysql commands to make it look more readable in vscode
+            // uppercase mysql commands to make the large query more readable in vscode
             `SELECT 
         emp.id AS employee_id,
         emp.first_name,
@@ -22,25 +23,28 @@ async function viewEmployeesQ() {
     console.table(rows)
 }
 
-
+// queries below
 async function viewRolesQ() {
-    const [rows, fields] = await connection.promise().query(
+    const [roles, fields] = await connection.promise().query(
         'select * from role'
     )
-    console.table(rows)
+    // console.table npm formats a table for you
+    console.table(roles)
 }
 
 async function viewDepartmentsQ() {
-    const [rows, fields] = await connection.promise().query(
+    const [departments, fields] = await connection.promise().query(
         'select * from department'
     )
-    console.table(rows)
+    console.table(departments)
 }
 
 async function addEmployeeQ() {
     const [roles, fields] = await connection.promise().query(
         'select * from role'
     )
+
+    // use map method to display all roles dynamically
     const roleChoices = roles.map(role => ({
         name: role.title,
         value: role.id
@@ -49,24 +53,27 @@ async function addEmployeeQ() {
         .prompt([
             {
                 type: 'input',
-                messsage: "Employee's first name?",
+                message: "Employee's first name?",
+                validate: lengthValidator,
                 name: 'firstName'
             },
             {
                 type: 'input',
                 message: "Employee's last name?",
+                validate: lengthValidator,
                 name: 'lastName'
             },
             {
                 type: 'list',
                 message: "What is the employee's role?",
+            // populates the choices with each one of the role names
                 choices: roleChoices,
                 name: 'role'
             }
         ])
         .then(async data => {
 
-            const [rows, fields] = await connection.promise().query(
+            await connection.promise().query(
                 `insert into employee (first_name, last_name, role_id) 
                   values ('${data.firstName}', '${data.lastName}', '${data.role}')`
             )
@@ -82,19 +89,21 @@ async function addRoleQ() {
         'select * from department'
     )
     const departmentChoices = departments.map(department => ({
-        name:  department.department_name,
+        name: department.department_name,
         value: department.id
     }))
     await inquirer
         .prompt([
             {
                 type: 'input',
-                messsage: "What is the role?",
+                message: "What is the role?",
+                validate: roleLengthValidator,
                 name: 'roleName'
             },
             {
                 type: 'input',
                 message: 'What is the salary for said role?',
+                validate: salaryValidator,
                 name: 'salary'
             },
             {
@@ -140,21 +149,21 @@ async function updateRoleQ() {
                 value: role.id
             }))
 
-        await inquirer
-            .prompt(
-                {
-                    type: 'list',
-                    message: 'What is the role you want updated for selected Employee?',
-                    choices: roleChoices,
-                    name: 'roleId'
-                }
-            )
-            .then(async roleData => {
-                await connection.promise().query(
-                    'update employee set role_id = ? where id = ?',
-                    [roleData.roleId, data.employeeId]
+            await inquirer
+                .prompt(
+                    {
+                        type: 'list',
+                        message: 'What is the role you want updated for selected Employee?',
+                        choices: roleChoices,
+                        name: 'roleId'
+                    }
                 )
-            })
+                .then(async roleData => {
+                    await connection.promise().query(
+                        'update employee set role_id = ? where id = ?',
+                        [roleData.roleId, data.employeeId]
+                    )
+                })
         })
         .catch(err => {
             console.error("error:", err)
@@ -167,6 +176,7 @@ async function addDepartmentQ() {
             {
                 type: 'input',
                 message: 'What is the name of the department you want to add?',
+                validate: depLengthValidator,
                 name: 'addDepartment'
             }
         )
@@ -183,19 +193,55 @@ async function addDepartmentQ() {
 
 async function calculateBudget() {
     const [budget, fields] = await connection.promise().query(
-      `SELECT dep.department_name AS department, SUM(rl.salary) AS utilized_budget
+    // calculates the collective sum of each department
+        `SELECT dep.department_name AS department, SUM(rl.salary) AS utilized_budget
        FROM employee emp
        LEFT JOIN role rl ON emp.role_id = rl.id
        LEFT JOIN department dep ON rl.department_id = dep.id
        GROUP BY department`
     )
-  
+
     return budget
-  }
+}
 
 async function seeBudgetQ() {
     const budgetData = await calculateBudget()
     console.table(budgetData)
+}
+
+
+// validators below
+const lengthValidator = async (input) => {
+    if (input.length <= 1) {
+        return 'Please enter valid name.';
+    } else {
+        return true;
+    }
+}
+
+const roleLengthValidator = async (input) => {
+    if (input.length <= 1) {
+        return 'Please enter valid role name.';
+    } else {
+        return true;
+    }
+}
+
+const depLengthValidator = async (input) => {
+    if (input.length <= 1) {
+        return 'Please enter valid department name.';
+    } else {
+        return true;
+    }
+}
+
+const salaryValidator = async (input) => {
+// validates if the user input is a number, if not it prompts the user
+    if (isNaN(input)) {
+        return 'Please enter valid salary.';
+    } else {
+        return true;
+    }
 }
 
 module.exports = {
