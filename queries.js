@@ -4,7 +4,7 @@ const inquirer = require('inquirer')
 async function viewEmployeesQ() {
     // need to deconstruct and use fields instead of just rows because it will display an object
     // and break if we dont deconstruct into 2 variables
-    const [rows, fields] =
+    const [allEmployees, fields] =
         await connection.promise().query(
             // uppercase mysql commands to make the large query more readable in vscode
             `SELECT 
@@ -20,7 +20,7 @@ async function viewEmployeesQ() {
      LEFT JOIN department dep ON rl.department_id = dep.id
      LEFT JOIN employee mgr ON emp.manager_id = mgr.id;`
         )
-    console.table(rows)
+    console.table(allEmployees)
 }
 
 // queries below
@@ -40,15 +40,23 @@ async function viewDepartmentsQ() {
 }
 
 async function addEmployeeQ() {
-    const [roles, fields] = await connection.promise().query(
-        'select * from role'
-    )
+    const [roles, fields] = await connection.promise().query('select * from role');
 
     // use map method to display all roles dynamically
     const roleChoices = roles.map(role => ({
         name: role.title,
         value: role.id
-    }))
+    }));
+
+    const [employees, fieldz] = await connection.promise().query('select * from employee');
+    const employeeChoices = employees.map(employee => ({
+        name: `${employee.first_name} ${employee.last_name}`,
+        value: employee.id
+    }));
+
+    employeeChoices.push('NO MANAGER');
+    employeeChoices.unshift({ name: 'NO MANAGER', value: null });
+
     await inquirer
         .prompt([
             {
@@ -65,24 +73,31 @@ async function addEmployeeQ() {
             },
             {
                 type: 'list',
+                message: "Employee's manager?",
+                choices: employeeChoices,
+                name: 'empManager'
+            },
+            {
+                type: 'list',
                 message: "What is the employee's role?",
-                // populates the choices with each one of the role names
                 choices: roleChoices,
                 name: 'role'
             }
         ])
         .then(async data => {
+            const managerId = data.empManager === 'NO MANAGER' ? null : data.empManager;
 
             await connection.promise().query(
-                `insert into employee (first_name, last_name, role_id) 
-                  values ('${data.firstName}', '${data.lastName}', '${data.role}')`
-            )
-            console.info(data.firstName, 'added!')
+                'insert into employee (first_name, last_name, role_id, manager_id) values (?, ?, ?, ?)',
+                [data.firstName, data.lastName, data.role, managerId]
+            );
+            console.info(data.firstName, 'added!');
         })
         .catch(err => {
-            console.error("error:", err)
-        })
+            console.error("error:", err);
+        });
 }
+
 
 async function addRoleQ() {
     const [departments, fields] = await connection.promise().query(
