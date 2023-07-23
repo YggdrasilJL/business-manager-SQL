@@ -66,7 +66,7 @@ async function addEmployeeQ() {
             {
                 type: 'list',
                 message: "What is the employee's role?",
-            // populates the choices with each one of the role names
+                // populates the choices with each one of the role names
                 choices: roleChoices,
                 name: 'role'
             }
@@ -193,7 +193,7 @@ async function addDepartmentQ() {
 
 async function calculateBudget() {
     const [budget, fields] = await connection.promise().query(
-    // calculates the collective sum of each department
+        // calculates the collective sum of each department
         `SELECT dep.department_name AS department, SUM(rl.salary) AS utilized_budget
        FROM employee emp
        LEFT JOIN role rl ON emp.role_id = rl.id
@@ -236,7 +236,7 @@ const depLengthValidator = async (input) => {
 }
 
 const salaryValidator = async (input) => {
-// validates if the user input is a number, if not it prompts the user
+    // validates if the user input is a number, if not it prompts the user
     if (isNaN(input)) {
         return 'Please enter valid salary.';
     } else {

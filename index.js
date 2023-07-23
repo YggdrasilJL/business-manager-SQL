@@ -1,4 +1,5 @@
 const inquirer = require('inquirer')
+// import all queries from queries.js
 const { viewEmployeesQ, viewRolesQ, viewDepartmentsQ, addEmployeeQ,
     updateRoleQ, addDepartmentQ, addRoleQ, seeBudgetQ
 } = require('./queries')
@@ -6,23 +7,23 @@ const { viewEmployeesQ, viewRolesQ, viewDepartmentsQ, addEmployeeQ,
 menu()
 async function menu() {
     await inquirer
-        .prompt(
-            {
-                type: 'list',
-                message: 'What would you like to do?',
-                choices:
-                    ['View all employees',
-                        'Add an employee',
-                        'Update employee role',
-                        'View all roles',
-                        'Add a role',
-                        'View all departments',
-                        'Add department',
-                        'See annual utilized budget',
-                        'Quit'],
-                name: 'action'
-            })
+        .prompt({
+            type: 'list',
+            message: 'What would you like to do?',
+            choices:
+                ['View all employees',
+                    'Add an employee',
+                    'Update employee role',
+                    'View all roles',
+                    'Add a role',
+                    'View all departments',
+                    'Add department',
+                    'See annual utilized budget',
+                    'Quit'],
+            name: 'action'
+        })
         .then(data => {
+            // switch case for each choice the user chooses, calls a function for each
             switch (data.action) {
                 case 'View all employees':
                     viewEmployees()
@@ -56,6 +57,8 @@ async function menu() {
             console.error("error:", err)
         })
 }
+
+// choices functions that call the queries, then call the main menu
 
 async function viewEmployees() {
     await viewEmployeesQ()
@@ -96,7 +99,7 @@ async function seeBudget() {
     await seeBudgetQ()
     menu()
 }
-
+// quit function with confirmation
 async function quit() {
     await inquirer
         .prompt(
