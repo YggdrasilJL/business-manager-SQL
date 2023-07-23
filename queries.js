@@ -209,10 +209,9 @@ async function addDepartmentQ() {
             console.error("error:", err)
         })
 }
-
 async function calculateBudget() {
     const [budget, fields] = await connection.promise().query(
-        // calculates the collective sum of each department
+        // calculates the collective sum of each department and shows it in one table
         `SELECT dep.department_name AS department, SUM(rl.salary) AS utilized_budget
        FROM employee emp
        LEFT JOIN role rl ON emp.role_id = rl.id

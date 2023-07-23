@@ -6,6 +6,7 @@ const { viewEmployeesQ, viewRolesQ, viewDepartmentsQ, addEmployeeQ,
 
 menu()
 async function menu() {
+// 'employee manager' sign
     console.log(`
     
     __  ______                 _                         __  __                                    __   

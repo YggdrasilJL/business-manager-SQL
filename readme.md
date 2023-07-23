@@ -27,7 +27,7 @@ and put it in your workbench, run it and now you will have pre-populated your da
     host: process.env.host,
 
     user: process.env.user,
-    
+
     password: process.env.password,
 
     database: process.env.database
@@ -47,6 +47,18 @@ Then go through the prompts and do what you please!
 
 ## Walkthrough Video
 If you are still unsure how to use this program, no worries [here](https://clipchamp.com/watch/6L5UVTvdsNK) I have a video showing exactly how the application works.
+
+## Technologies used
+- MySQL
+
+- Node.js
+
+- Javascript
+
+- Git
+
+- GitHub
+
 
 # Credits
 This project was created by Jacob Lowther
