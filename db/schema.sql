@@ -1,5 +1,6 @@
+drop database if exists manage_bus;
 create database manage_bus;
-use (manage_bus)
+use manage_bus;
 
 drop table if exists employee;
 drop table if exists department;
@@ -28,8 +29,4 @@ create table employee (
     manager_id int null,
     foreign key (role_id) references role(id),
     foreign key (manager_id) references employee(id)
-);
-
-create table budget (
-    utilized_budget decimal
 );
