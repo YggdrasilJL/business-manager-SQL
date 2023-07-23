@@ -1,6 +1,6 @@
 const inquirer = require('inquirer')
 const { viewEmployeesQ, viewRolesQ, viewDepartmentsQ, addEmployeeQ,
-    updateRoleQ, addDepartmentQ, addRoleQ,seeBudgetQ } = require('./queries')
+    updateRoleQ, addDepartmentQ, addRoleQ, seeBudgetQ } = require('./queries')
 
 menu()
 async function menu() {

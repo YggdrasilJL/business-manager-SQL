@@ -181,18 +181,21 @@ async function addDepartmentQ() {
         })
 }
 
+async function calculateBudget() {
+    const [budget, fields] = await connection.promise().query(
+      `SELECT dep.department_name AS department, SUM(rl.salary) AS utilized_budget
+       FROM employee emp
+       LEFT JOIN role rl ON emp.role_id = rl.id
+       LEFT JOIN department dep ON rl.department_id = dep.id
+       GROUP BY department`
+    )
+  
+    return budget
+  }
+
 async function seeBudgetQ() {
-        await connection.promise().query(
-            'delete from budget'
-        )
-        await connection.promise().query(
-        `insert into budget (utilized_budget)
-         select sum(salary) from role`
-    )
-    const [sum, fields] = await connection.promise().query(
-        `select * from budget`
-    )
-    console.table(sum)
+    const budgetData = await calculateBudget()
+    console.table(budgetData)
 }
 
 module.exports = {
