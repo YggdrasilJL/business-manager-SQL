@@ -178,6 +178,10 @@ async function updateRoleQ() {
                         'update employee set role_id = ? where id = ?',
                         [roleData.roleId, data.employeeId]
                     )
+                    console.log('Role updated')
+                })
+                .catch(err => {
+                    console.error("error:", err)
                 })
         })
         .catch(err => {
